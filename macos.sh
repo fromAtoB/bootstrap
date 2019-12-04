@@ -2,12 +2,38 @@ source common.sh
 
 function install_macos_pkg() {
     local pkg_url="${1}"
-    local pkgfile=$(mktemp)
+    local pkgdir=$(mktemp -d)
+    local pkgfile="${pkgdir}/tmp.pkg"
+    # WHY: macos installer is fucked up and needs the file to have
+    # the right suffix, and mktemp on macos does not seem to have a suffix option
 
     printf "Installing macos pkg from URL: %s" "${pkg_url}"
-    wget "${pkg_url}"
+    curl -fL "${pkg_url}" --output "${pkgfile}"
     sudo installer -pkg "${pkgfile}" -target /
-    rm -rf "${pkgfile}"
+    rm -rf "${pkgdir}"
+}
+
+function install_macos_dmg() {
+    local dmg_url="${1}"
+    local dmgdir=$(mktemp -d)
+    local dmgfile="${dmgdir}/tmp.dmg"
+    # WHY: macos installer is fucked up and needs the file to have
+    # the right suffix, and mktemp on macos does not seem to have a suffix option
+
+    printf "Installing macos dmg from URL: %s" "${dmg_url}"
+    curl -fL "${dmg_url}" --output "${dmgfile}"
+
+    local volume_info=$(hdiutil attach "${dmgfile}" | grep Volumes)
+    local volume=$(echo ${volume_info} | cut -d ' ' -f 3)
+    local device=$(echo ${volume_info} | cut -d ' ' -f 1)
+
+    echo "Installing applications"
+    sudo cp -rf "${volume}/*.app" /Applications
+    echo "Installed applications"
+
+    printf "detaching device[%s]\n" "${device}"
+    hdiutil detach "${device}"
+    rm -rf "${dmgdir}"
 }
 
 function install_macos_homebrew(){
@@ -29,23 +55,21 @@ function install_macos_go(){
 }
 
 function install_macos_docker(){
-    echo "TODO"
-}
-
-function install_macos_docker_compose(){
-    echo "TODO"
-}
-
-function install_gcloud(){
-    echo "TODO"
+    if [ "$(is_installed "docker --version")" == "yes" ]; then
+        echo "docker is already installed, skipping install"
+        return
+    fi
+    install_macos_dmg "https://download.docker.com/mac/stable/Docker.dmg"
 }
 
 function install_macos_deps() {
     local go_version="${1}"
+    local gcloud_version="${2}"
 
     install_macos_homebrew
     install_macos_go "${go_version}"
     install_macos_docker
-    install_macos_docker_compose
-    install_gcloud
+    install_gcloud "${gcloud_version}"
+
+    fix_git_for_go_get
 }
