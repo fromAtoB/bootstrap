@@ -13,29 +13,6 @@ function install_macos_pkg() {
     rm -rf "${pkgdir}"
 }
 
-function install_macos_dmg() {
-    local dmg_url="${1}"
-    local dmgdir=$(mktemp -d)
-    local dmgfile="${dmgdir}/tmp.dmg"
-    # WHY: macos installer is fucked up and needs the file to have
-    # the right suffix, and mktemp on macos does not seem to have a suffix option
-
-    printf "Installing macos dmg from URL: %s" "${dmg_url}"
-    curl -fL "${dmg_url}" --output "${dmgfile}"
-
-    local volume_info=$(hdiutil attach "${dmgfile}" | grep Volumes)
-    local volume=$(echo ${volume_info} | cut -d ' ' -f 3)
-    local device=$(echo ${volume_info} | cut -d ' ' -f 1)
-
-    echo "Installing applications"
-    sudo cp -rf "${volume}/*.app" /Applications
-    echo "Installed applications"
-
-    printf "detaching device[%s]\n" "${device}"
-    hdiutil detach "${device}"
-    rm -rf "${dmgdir}"
-}
-
 function install_macos_homebrew(){
     if [ "$(is_installed "brew help")" == "yes" ]; then
         echo "brew is already installed, skipping install"
@@ -59,7 +36,7 @@ function install_macos_docker(){
         echo "docker is already installed, skipping install"
         return
     fi
-    brew install docker
+    brew cask install docker
 }
 
 function install_macos_deps() {
