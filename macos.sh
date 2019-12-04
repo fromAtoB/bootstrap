@@ -19,17 +19,13 @@ function install_macos_homebrew(){
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 }
 
-function install_macos_essentials(){
-    echo "Installing essential tools"
-    brew install wget
-}
-
 function install_macos_go(){
     if [ "$(is_installed "go version")" == "yes" ]; then
         echo "go is already installed, skipping install"
         return
     fi
-    install_macos_pkg "https://dl.google.com/go/go${GO_VERSION}.darwin-amd64.pkg"
+    local version="${1}"
+    install_macos_pkg "https://dl.google.com/go/go${version}.darwin-amd64.pkg"
 }
 
 function install_macos_docker(){
@@ -45,9 +41,10 @@ function install_gcloud(){
 }
 
 function install_macos_deps() {
+    local go_version="${1}"
+
     install_macos_homebrew
-    install_macos_essentials
-    install_macos_go
+    install_macos_go "${go_version}"
     install_macos_docker
     install_macos_docker_compose
     install_gcloud

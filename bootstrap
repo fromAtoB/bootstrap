@@ -11,7 +11,7 @@ function main() {
     local sysname="$(uname -s)"
     case "${sysname}" in
         Darwin*)
-            install_macos_deps
+            install_macos_deps "${GO_VERSION}"
             ;;
         *)
             printf "system:[%s] is not supported right now" "${system}"
