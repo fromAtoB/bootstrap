@@ -10,13 +10,14 @@ function install_gcloud() {
     fi
 
     local version="${1}"
+    local os="${2}"
     local workdir=$(mktemp -d)
     local installdir="$HOME/.local"
     local sdkdir="${installdir}/google-cloud-sdk"
 
     printf "google cloud SDK will be installed at: %s\n" "${sdkdir}"
     cd "${workdir}"
-    curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${version}-linux-x86_64.tar.gz
+    curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${version}-${os}-x86_64.tar.gz
     tar zxvf google-cloud-sdk-${version}-linux-x86_64.tar.gz
     mv google-cloud-sdk ${installdir}
     cd ${sdkdir}

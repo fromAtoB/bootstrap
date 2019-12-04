@@ -69,7 +69,7 @@ function install_macos_deps() {
     install_macos_homebrew
     install_macos_go "${go_version}"
     install_macos_docker
-    install_gcloud "${gcloud_version}"
+    install_gcloud "${gcloud_version}" "darwin"
 
     fix_git_for_go_get
 }
