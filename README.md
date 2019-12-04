@@ -1,7 +1,8 @@
 # bootstrap
 
 Responsible for helping devs to bootstrap their local development environments.
-The only pre-requisite is having git installed, all else will be installed for you.
+The only pre-requisite is having git installed and basic access to this repo,
+all else will be installed for you.
 
 Just run:
 
