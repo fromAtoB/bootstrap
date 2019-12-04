@@ -72,4 +72,5 @@ function install_macos_deps() {
     install_gcloud "${gcloud_version}" "darwin"
 
     fix_git_for_go_get
+    configure_docker_credentials
 }

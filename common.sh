@@ -38,3 +38,7 @@ function fix_git_for_go_get(){
     echo -e '[url "ssh://git@github.com/"]\n\tinsteadOf = https://github.com/' >> "${gitcfg_path}"
     echo "configured git"
 }
+
+function configure_docker_credentials() {
+    gcloud auth configure-docker
+}
