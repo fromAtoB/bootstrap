@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+source macos.sh
+
+readonly GO_VERSION=1.13.4
+
+function main() {
+    local sysname="$(uname -s)"
+    case "${sysname}" in
+        Darwin*)
+            install_macos_deps
+            ;;
+        *)
+            printf "system:[%s] is not supported right now" "${system}"
+            ;;
+    esac
+}
+
+main
