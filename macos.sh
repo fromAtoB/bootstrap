@@ -59,7 +59,7 @@ function install_macos_docker(){
         echo "docker is already installed, skipping install"
         return
     fi
-    install_macos_dmg "https://download.docker.com/mac/stable/Docker.dmg"
+    brew install docker
 }
 
 function install_macos_deps() {
