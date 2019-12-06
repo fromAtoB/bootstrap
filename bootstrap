@@ -5,14 +5,11 @@ set -o nounset
 
 source macos.sh
 
-readonly GO_VERSION="1.13.4"
-readonly GCLOUD_VERSION="272.0.0"
-
 function main() {
     local sysname="$(uname -s)"
     case "${sysname}" in
         Darwin*)
-            install_macos_deps "${GO_VERSION}" "${GCLOUD_VERSION}"
+            bootstrap_macos
             ;;
         *)
             printf "system:[%s] is not supported right now" "${system}"

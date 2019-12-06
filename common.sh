@@ -3,7 +3,16 @@ function is_installed() {
     eval "${testcmd} &> /dev/null" && echo "yes" || echo "no"
 }
 
+function install_message() {
+    echo
+    echo "==========================="
+    echo "Installing ${1}"
+    echo "==========================="
+    echo
+}
+
 function install_gcloud() {
+    # WHY: Perhaps it will be useful to linux distro who dont have gcloud package
     if [ "$(is_installed "gcloud --version")" == "yes" ]; then
         echo "gcloud is already installed, skipping install"
         return
