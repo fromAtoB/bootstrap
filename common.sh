@@ -3,9 +3,26 @@ function is_installed() {
     eval "${testcmd} &> /dev/null" && echo "yes" || echo "no"
 }
 
+function message() {
+    echo
+    echo "==================================================="
+    echo "${1}"
+    echo "==================================================="
+    echo
+}
+
+function install_message() {
+    message "Installing ${1}"
+}
+
+function skip_install_message() {
+    message "${1} already installed, skipping it"
+}
+
 function install_gcloud() {
+    # WHY: Perhaps it will be useful to linux distro who dont have gcloud package
     if [ "$(is_installed "gcloud --version")" == "yes" ]; then
-        echo "gcloud is already installed, skipping install"
+        skip_install_message "gcloud"
         return
     fi
 
@@ -31,7 +48,7 @@ function fix_git_for_go_get(){
     local hascfg=$(grep "ssh://git@github.com/" "${gitcfg_path}" &>/dev/null && echo "yes" || echo "no")
 
     if [ "$hascfg" == "yes" ]; then
-        echo "git is already configured, skipping config"
+        message "git is already configured, skipping config"
         return
     fi
 
