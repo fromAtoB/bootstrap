@@ -2,7 +2,7 @@ source common.sh
 
 function install_macos_homebrew(){
     if [ "$(is_installed "brew help")" == "yes" ]; then
-        echo "brew is already installed, skipping install"
+        skip_install_message "homebrew"
         return
     fi
     install_message "Homebrew"
@@ -11,7 +11,7 @@ function install_macos_homebrew(){
 
 function install_macos_go(){
     if [ "$(is_installed "go version")" == "yes" ]; then
-        echo "go is already installed, skipping install"
+        skip_install_message "go"
         return
     fi
     install_message "Go"
@@ -20,7 +20,7 @@ function install_macos_go(){
 
 function install_macos_docker(){
     if [ "$(is_installed "docker --version")" == "yes" ]; then
-        echo "docker is already installed, skipping install"
+        skip_install_message "docker"
         return
     fi
     install_message "Docker"
@@ -29,7 +29,7 @@ function install_macos_docker(){
 
 function install_macos_gcloud() {
     if [ "$(is_installed "gcloud --version")" == "yes" ]; then
-        echo "gcloud is already installed, skipping install"
+        skip_install_message "gcloud"
         return
     fi
     install_message "Google Cloud SDK"
