@@ -12,7 +12,7 @@ function main() {
             bootstrap_macos
             ;;
         *)
-            printf "system:[%s] is not supported right now" "${system}"
+            printf "system:[%s] is not supported right now\n" "${sysname}"
             ;;
     esac
 }
