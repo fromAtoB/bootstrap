@@ -4,12 +4,16 @@ set -o errexit
 set -o nounset
 
 source macos.sh
+source linux.sh
 
 function main() {
     local sysname="$(uname -s)"
     case "${sysname}" in
         Darwin*)
             bootstrap_macos
+            ;;
+        Linux*)
+            bootstrap_linux
             ;;
         *)
             printf "system:[%s] is not supported right now\n" "${sysname}"
