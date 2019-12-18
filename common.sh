@@ -19,30 +19,6 @@ function skip_install_message() {
     message "${1} already installed, skipping it"
 }
 
-function install_gcloud() {
-    # WHY: Perhaps it will be useful to linux distro who dont have gcloud package
-    if [ "$(is_installed "gcloud --version")" == "yes" ]; then
-        skip_install_message "gcloud"
-        return
-    fi
-
-    local version="${1}"
-    local os="${2}"
-    local workdir=$(mktemp -d)
-    local installdir="$HOME/.local"
-    local sdkdir="${installdir}/google-cloud-sdk"
-
-    mkdir -p "${installdir}"
-    printf "google cloud SDK will be installed at: %s\n" "${sdkdir}"
-    cd "${workdir}"
-    curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${version}-${os}-x86_64.tar.gz
-    tar zxvf google-cloud-sdk-${version}-${os}-x86_64.tar.gz
-    mv google-cloud-sdk ${installdir}
-    cd ${sdkdir}
-    ./install.sh
-    rm -rf ${workdir}
-}
-
 function fix_git_for_go_get(){
     local gitcfg_path="${HOME}/.gitconfig"
     local hascfg=$(grep "ssh://git@github.com/" "${gitcfg_path}" &>/dev/null && echo "yes" || echo "no")
